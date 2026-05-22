@@ -1,8 +1,8 @@
 'use strict';
 
 /*
- * Created with @iobroker/create-adapter v3.1.5
- */
+* Created with @iobroker/create-adapter v3.1.5
+*/
 
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
@@ -176,10 +176,10 @@ class Openwa extends utils.Adapter {
             this.log.info(`Send a WhatsApp message via Blockly to ${targetChatId}: "${messageText}"`);
 
             const response = await fetch(`${serverUrl}/api/sessions/${sessionid}/messages/send-text`, {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                    "x-api-key": token,
-                    "Content-Type": "application/json"
+                    'x-api-key': token,
+                    'Content-Type':·'application/json',
                 },
                 body: JSON.stringify({
                     chatId: targetChatId,
