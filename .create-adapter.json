@@ -1,0 +1,38 @@
+{
+	"cli": true,
+	"target": "directory",
+	"adapterName": "openwa",
+	"title": "Open-WA WhatsApp",
+	"description": "Connects ioBroker to an Open-WA instance",
+	"expert": "yes",
+	"features": [
+		"adapter"
+	],
+	"adminFeatures": [],
+	"type": "messaging",
+	"startMode": "daemon",
+	"connectionType": "local",
+	"dataSource": "push",
+	"connectionIndicator": "yes",
+	"language": "JavaScript",
+	"nodeVersion": "22",
+	"adminUi": "json",
+	"tools": [
+		"ESLint",
+		"type checking"
+	],
+	"eslintConfig": "official",
+	"releaseScript": "no",
+	"devServer": "local",
+	"indentation": "Tab",
+	"quotes": "single",
+	"authorName": "Thorsten",
+	"authorGithub": "ThorstenBoettler",
+	"authorEmail": "thorsten.boettler@freenet.de",
+	"gitRemoteProtocol": "HTTPS",
+	"gitCommit": "no",
+	"defaultBranch": "main",
+	"license": "MIT License",
+	"dependabot": "yes",
+	"creatorVersion": "3.1.5"
+}

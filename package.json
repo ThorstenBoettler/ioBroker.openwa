@@ -1,0 +1,62 @@
+{
+  "name": "iobroker.openwa",
+  "version": "0.0.1",
+  "description": "Connects ioBroker to an Open-WA instance",
+  "author": {
+    "name": "Thorsten",
+    "email": "thorsten.boettler@freenet.de"
+  },
+  "contributors": [],
+  "homepage": "https://github.com/ThorstenBoettler/ioBroker.openwa",
+  "license": "MIT",
+  "keywords": [
+    "template",
+    "automation",
+    "IoT",
+    "integration"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ThorstenBoettler/ioBroker.openwa.git"
+  },
+  "engines": {
+    "node": ">= 22"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.3.2"
+  },
+  "devDependencies": {
+    "@iobroker/adapter-dev": "^1.5.0",
+    "@iobroker/dev-server": "^0.8.0",
+    "@iobroker/eslint-config": "^2.3.4",
+    "@iobroker/testing": "^5.2.2",
+    "@tsconfig/node22": "^22.0.5",
+    "@types/iobroker": "npm:@iobroker/types@^7.1.2",
+    "@types/node": "^22.19.19",
+    "typescript": "~5.9.3"
+  },
+  "main": "main.js",
+  "files": [
+    "admin{,/!(src)/**}/!(tsconfig|tsconfig.*|.eslintrc).{json,json5}",
+    "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,js}",
+    "lib/",
+    "www/",
+    "io-package.json",
+    "LICENSE",
+    "main.js"
+  ],
+  "scripts": {
+    "test:js": "mocha --config test/mocharc.custom.json \"{!(node_modules|test)/**/*.test.js,*.test.js,test/**/test!(PackageFiles|Startup).js}\"",
+    "test:package": "mocha test/package --exit",
+    "test:integration": "mocha test/integration --exit",
+    "test": "npm run test:js && npm run test:package",
+    "check": "tsc --noEmit -p tsconfig.check.json",
+    "lint": "eslint -c eslint.config.mjs .",
+    "translate": "translate-adapter",
+    "dev-server": "dev-server"
+  },
+  "bugs": {
+    "url": "https://github.com/ThorstenBoettler/ioBroker.openwa/issues"
+  },
+  "readmeFilename": "README.md"
+}

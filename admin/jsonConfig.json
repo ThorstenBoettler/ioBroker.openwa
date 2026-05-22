@@ -1,0 +1,27 @@
+{
+    "i18n": true,
+    "type": "panel",
+    "items": {
+        "serverIp": {
+            "type": "text",
+            "label": "Open-WA Server URL",
+            "sm": 12,
+            "md": 6,
+            "newLine": true
+        },
+        "apiToken": {
+            "type": "text",
+            "label": "API Token",
+            "sm": 12,
+            "md": 6,
+            "newLine": true
+        },
+        "sessionID": {
+            "type": "text",
+            "label": "Session ID",
+            "sm": 12,
+            "md": 6,
+            "newLine": true
+        }
+    }
+}

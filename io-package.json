@@ -1,0 +1,119 @@
+{
+	"common": {
+		"name": "openwa",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"uk": "Початкова версія",
+				"zh-cn": "首次出版"
+			}
+		},
+		"titleLang": {
+			"en": "Open-WA WhatsApp",
+			"de": "Open-WA WhatsApp",
+			"ru": "Открытый WhatsApp WhatsApp",
+			"pt": "WhatsApp aberto WA",
+			"nl": "Open WA WhatsApp",
+			"fr": "WhatsApp ouvert-WA",
+			"it": "Apri WA WhatsApp",
+			"es": "WhatsApp WA abierto",
+			"pl": "Open-WA WhatsApp",
+			"uk": "Open-WA WhatsApp",
+			"zh-cn": "Open-WA WhatsApp"
+		},
+		"desc": {
+			"en": "Connects ioBroker to an Open-WA instance",
+			"de": "Verbindet ioBroker mit einer Open-WA-Instanz",
+			"ru": "Подключает ioBroker к экземпляру Open-WA.",
+			"pt": "Conecta o ioBroker a uma instância Open-WA",
+			"nl": "Verbindt ioBroker met een Open-WA-instantie",
+			"fr": "Connecte ioBroker à une instance Open-WA",
+			"it": "Connette ioBroker a un'istanza Open-WA",
+			"es": "Conecta ioBroker a una instancia Open-WA",
+			"pl": "Łączy ioBroker z instancją Open-WA",
+			"uk": "Підключає ioBroker до примірника Open-WA",
+			"zh-cn": "将 ioBroker 连接到 Open-WA 实例"
+		},
+		"authors": [
+			"Thorsten <thorsten.boettler@freenet.de>"
+		],
+		"keywords": [
+			"template",
+			"automation",
+			"IoT",
+			"integration"
+		],
+		"licenseInformation": {
+			"type": "free",
+			"license": "MIT"
+		},
+		"platform": "Javascript/Node.js",
+		"icon": "openwa.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/ThorstenBoettler/ioBroker.openwa/main/admin/openwa.png",
+		"readme": "https://github.com/ThorstenBoettler/ioBroker.openwa/blob/main/README.md",
+		"loglevel": "info",
+		"tier": 3,
+		"mode": "daemon",
+		"type": "messaging",
+		"compact": true,
+		"connectionType": "local",
+		"dataSource": "push",
+		"adminUI": {
+			"config": "json"
+		},
+		"blockly": true,
+		"messagebox": true,
+		"dependencies": [
+			{
+				"js-controller": ">=6.0.11"
+			}
+		],
+		"globalDependencies": [
+			{
+				"admin": ">=7.0.23"
+			}
+		]
+	},
+	"native": {
+		"serverIp": "http://192.168.1.X:2785",
+    	"apiToken": "",
+		"sessionID": ""
+	},
+	"encryptedNative": [
+    	"apiToken"
+	],
+	"objects": [],
+	"instanceObjects": [
+		{
+			"_id": "info",
+			"type": "channel",
+			"common": {
+				"name": "Information"
+			},
+			"native": {}
+		},
+		{
+			"_id": "info.connection",
+			"type": "state",
+			"common": {
+				"role": "indicator.connected",
+				"name": "Device or service connected",
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {}
+		}
+	]
+}
