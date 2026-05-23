@@ -1,110 +1,217 @@
 ![Logo](admin/openwa.png)
+
 # ioBroker.openwa
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.openwa.svg)](https://www.npmjs.com/package/iobroker.openwa)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.openwa.svg)](https://www.npmjs.com/package/iobroker.openwa)
 ![Number of Installations](https://iobroker.live/badges/openwa-installed.svg)
 ![Current version in stable repository](https://iobroker.live/badges/openwa-stable.svg)
-
 [![NPM](https://nodei.co/npm/iobroker.openwa.png?downloads=true)](https://nodei.co/npm/iobroker.openwa/)
 
 **Tests:** ![Test and Release](https://github.com/ThorstenBoettler/ioBroker.openwa/workflows/Test%20and%20Release/badge.svg)
 
-## openwa adapter for ioBroker
+---
 
-Connects ioBroker to an Open-WA instance
+## ioBroker Adapter for Open-WA (WhatsApp)
 
-## Developer manual
-This section is intended for the developer. It can be deleted later.
+This adapter connects **ioBroker** to a running [Open-WA](https://github.com/open-wa/wa-automate-nodejs) instance, enabling you to send WhatsApp messages directly from Blockly scripts, JavaScript scripts, and automations.
 
-### DISCLAIMER
+> **Disclaimer:** This adapter is not an official product of WhatsApp or Meta. Use it at your own risk and in compliance with the [WhatsApp Terms of Service](https://www.whatsapp.com/legal/terms-of-service). "WhatsApp" is a registered trademark of Meta Platforms, Inc.
 
-Please make sure that you consider copyrights and trademarks when you use names or logos of a company and add a disclaimer to your README.
-You can check other adapters for examples or ask in the developer community. Using a name or logo of a company without permission may cause legal problems for you.
+---
 
-### Getting started
+## Table of Contents
 
-You are almost done, only a few steps left:
-1. Create a new repository on GitHub with the name `ioBroker.openwa`
-1. Initialize the current folder as a new git repository:  
-	```bash
-	git init -b main
-	git add .
-	git commit -m "Initial commit"
-	```
-1. Link your local repository with the one on GitHub:  
-	```bash
-	git remote add origin https://github.com/ThorstenBoettler/ioBroker.openwa
-	```
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+  - [Blockly](#blockly)
+  - [JavaScript / Script Adapter](#javascript--script-adapter)
+- [Message Types](#message-types)
+- [Data Points](#data-points)
+- [Changelog](#changelog)
+- [License](#license)
 
-1. Push all files to the GitHub repo:  
-	```bash
-	git push origin main
-	```
-1. Add a new secret under https://github.com/ThorstenBoettler/ioBroker.openwa/settings/secrets. It must be named `AUTO_MERGE_TOKEN` and contain a personal access token with push access to the repository, e.g. yours. You can create a new token under https://github.com/settings/tokens.
+---
 
-1. Head over to [main.js](main.js) and start programming!
+## Requirements
 
-### Best Practices
-We've collected some [best practices](https://github.com/ioBroker/ioBroker.repositories#development-and-coding-best-practices) regarding ioBroker development and coding in general. If you're new to ioBroker or Node.js, you should
-check them out. If you're already experienced, you should also take a look at them - you might learn something new :)
+- **ioBroker** with `js-controller >= 6.0.11` and `admin >= 7.0.23`
+- **Node.js >= 22**
+- A running **Open-WA** instance with REST API enabled and an API token configured
+  - Open-WA must be reachable via HTTP (e.g. `http://192.168.1.x:2785`)
+  - At least one WhatsApp session must be active and logged in
 
-### State Roles
-When creating state objects, it is important to use the correct role for the state. The role defines how the state should be interpreted by visualizations and other adapters. For a list of available roles and their meanings, please refer to the [state roles documentation](https://www.iobroker.net/#en/documentation/dev/stateroles.md).
+---
 
-**Important:** Do not invent your own custom role names. If you need a role that is not part of the official list, please contact the ioBroker developer community for guidance and discussion about adding new roles.
+## Installation
 
-### Scripts in `package.json`
-Several npm scripts are predefined for your convenience. You can run them using `npm run <scriptname>`
-| Script name | Description |
-|-------------|-------------|
-| `test:js` | Executes the tests you defined in `*.test.js` files. |
-| `test:package` | Ensures your `package.json` and `io-package.json` are valid. |
-| `test:integration` | Tests the adapter startup with an actual instance of ioBroker. |
-| `test` | Performs a minimal test run on package files and your tests. |
-| `check` | Performs a type-check on your code (without compiling anything). |
-| `lint` | Runs `ESLint` to check your code for formatting errors and potential bugs. |
-| `translate` | Translates texts in your adapter to all required languages, see [`@iobroker/adapter-dev`](https://github.com/ioBroker/adapter-dev#manage-translations) for more details. |
+Install the adapter via the **ioBroker Admin UI**:
 
-### Writing tests
-When done right, testing code is invaluable, because it gives you the 
-confidence to change your code while knowing exactly if and when 
-something breaks. A good read on the topic of test-driven development 
-is https://hackernoon.com/introduction-to-test-driven-development-tdd-61a13bc92d92. 
-Although writing tests before the code might seem strange at first, but it has very 
-clear upsides.
+1. Admin → Adapters → Search for `openwa`
+2. Click "Install"
+3. Create a new instance
 
-The template provides you with basic tests for the adapter startup and package files.
-It is recommended that you add your own tests into the mix.
+Alternatively via npm:
 
-### Publishing the adapter
-Using GitHub Actions, you can enable automatic releases on npm whenever you push a new git tag that matches the form 
-`v<major>.<minor>.<patch>`. We **strongly recommend** that you do. The necessary steps are described in `.github/workflows/test-and-release.yml`.
-
-To get your adapter released in ioBroker, please refer to the documentation 
-of [ioBroker.repositories](https://github.com/ioBroker/ioBroker.repositories#requirements-for-adapter-to-get-added-to-the-latest-repository).
-
-### Test the adapter manually with dev-server
-Since you set up `dev-server`, you can use it to run, test and debug your adapter.
-
-You may start `dev-server` by calling from your dev directory:
 ```bash
-dev-server watch
+npm install iobroker.openwa
 ```
 
-The ioBroker.admin interface will then be available at http://localhost:undefined/
+---
 
-Please refer to the [`dev-server` documentation](https://github.com/ioBroker/dev-server#command-line) for more details.
+## Configuration
+
+Open the adapter instance after installation. Three fields need to be filled in:
+
+| Field | Description | Example |
+|---|---|---|
+| **Open-WA Server URL** | Full URL including port to the Open-WA REST API | `http://192.168.1.100:2785` |
+| **API Token** | The API key of the Open-WA instance (stored encrypted) | `my-secret-token` |
+| **Session ID** | The session ID of the active WhatsApp session in Open-WA | `mySession` |
+
+After saving, the adapter will automatically attempt to connect to the Open-WA API. The connection status is visible at the data point `openwa.0.info.connection` and as a green/red indicator in the Admin overview.
+
+---
+
+## Usage
+
+### Blockly
+
+The adapter provides a dedicated **Blockly block**, available in the Blockly editor under **"Sendeto"** → **"WhatsApp (Open-WA)"**.
+
+The block offers the following options:
+
+| Field | Description |
+|---|---|
+| **Instance** | Adapter instance (e.g. `openwa.0`) |
+| **Chat Type** | `Private Chat` or `Group Chat` |
+| **Message Type** | Text, Image, Video, Audio/Voice, Document |
+| **Message** | The message text (for text messages) |
+| **ChatID** | Phone number or group ID of the recipient |
+| **URL** | Public URL of a media file (optional, for media messages) |
+| **Base64 String** | Base64-encoded media file (optional, alternative to URL) |
+| **MIME-Type** | Media type of the file (or `auto` for automatic detection) |
+| **Caption** | Caption for image/video messages (optional) |
+| **Result in** | Variable in which the send result will be stored |
+
+**Note on ChatID:**
+- For private chats: phone number in international format without `+` and without spaces, e.g. `4915112345678`
+- For groups: the internal WhatsApp group ID, e.g. `123456789-1620000000`
+- `@c.us` and `@g.us` are appended automatically if not already present.
+
+---
+
+### JavaScript / Script Adapter
+
+Messages can also be sent directly via `sendTo` from JavaScript scripts:
+
+**Text message:**
+
+```javascript
+sendTo('openwa.0', 'send', {
+    to: '4915112345678',
+    text: 'Hello from ioBroker!',
+    type: 'private'   // 'private' or 'group'
+}, result => {
+    const res = JSON.parse(result);
+    if (res.success) {
+        console.log('Message sent, ID: ' + res.id);
+    } else {
+        console.error('Error: ' + JSON.stringify(res.error));
+    }
+});
+```
+
+**Image message via URL:**
+
+```javascript
+sendTo('openwa.0', 'send', {
+    to: '4915112345678',
+    type: 'private',
+    msgType: 'image',
+    url: 'https://example.com/image.jpg',
+    caption: 'This is an image'
+}, result => {
+    console.log(result);
+});
+```
+
+**Image message via Base64:**
+
+```javascript
+sendTo('openwa.0', 'send', {
+    to: '4915112345678',
+    type: 'private',
+    msgType: 'image',
+    base64: '<BASE64_STRING>',
+    mimeType: 'image/jpeg',
+    caption: 'Camera snapshot'
+}, result => {
+    console.log(result);
+});
+```
+
+---
+
+## Message Types
+
+| `msgType` | Description | Required fields |
+|---|---|---|
+| `text` | Plain text message | `text` |
+| `image` | Image (JPEG, PNG, WebP) | `url` or `base64`, optional `caption` |
+| `video` | Video file (MP4) | `url` or `base64`, optional `caption` |
+| `audio` | Audio file / voice message (MP3, OGG) | `url` or `base64` |
+| `document` | Any file as a document (e.g. PDF) | `url` or `base64` |
+
+**Return value (`result`):**
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "id": "ABCDEF1234567890",
+  "timestamp": 1716000000
+}
+```
+
+On error:
+
+```json
+{
+  "success": false,
+  "status": 401,
+  "error": { ... }
+}
+```
+
+---
+
+## Data Points
+
+| Data point | Type | Description |
+|---|---|---|
+| `openwa.0.info.connection` | `boolean` | `true` when the connection to the Open-WA API is active |
+
+---
 
 ## Changelog
 
-### 0.0.1
-* (Thorsten) initial release
+### 0.0.1 (2026-05-22)
+* (Thorsten Böttler) Initial release
+* Send text, image, video, audio and document messages
+* Blockly integration with full featured block
+* Encrypted storage of the API token
+* Connection status indicator via `info.connection`
+
+---
 
 ## License
+
 MIT License
 
-Copyright (c) 2026 Thorsten <thorsten.boettler@freenet.de>
+Copyright (c) 2026 Thorsten Böttler <thorsten.boettler@freenet.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
