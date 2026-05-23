@@ -151,7 +151,7 @@ class Openwa extends utils.Adapter {
             let apiUrl = '';
             let fetchBody = {};
 
-            if (msgType === 'image' || msgType === 'video') {
+            if (msgType === 'image' || msgType === 'video' || msgType === 'audio') {
                 let defaultMime = 'image/png';
                 let defaultFilename = 'image.png';
 
@@ -159,6 +159,10 @@ class Openwa extends utils.Adapter {
                     defaultMime = 'video/mp4';
                     defaultFilename = 'video.mp4';
                     apiUrl = `${serverUrl}/api/sessions/${sessionid}/messages/send-video`;
+                } else if (msgType === 'audio') {
+                    defaultMime = 'audio/mpeg';
+                    defaultFilename = 'audio.mp3';
+                    apiUrl = `${serverUrl}/api/sessions/${sessionid}/messages/send-audio`;
                 } else {
                     apiUrl = `${serverUrl}/api/sessions/${sessionid}/messages/send-image`;
                 }
@@ -191,8 +195,11 @@ class Openwa extends utils.Adapter {
                     base64: base64string,
                     mimetype: mimeType,
                     filename: defaultFilename,
-                    caption: captionText || messageText || '',
                 };
+
+                if (msgType !== 'audio') {
+                    fetchBody.caption = captionText || messageText || '';
+                }
 
                 this.log.info(`Sending WhatsApp image via Blockly to ${targetChatId}`);
                 this.log.debug(`Fetch Body: ${JSON.stringify(fetchBody, null, 2)}`);
