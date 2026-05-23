@@ -151,7 +151,7 @@ class Openwa extends utils.Adapter {
             let apiUrl = '';
             let fetchBody = {};
 
-            if (msgType === 'image' || msgType === 'video' || msgType === 'audio') {
+            if (msgType === 'image' || msgType === 'video' || msgType === 'audio' || msgType === 'document') {
                 let defaultMime = 'image/png';
                 let defaultFilename = 'image.png';
 
@@ -163,6 +163,10 @@ class Openwa extends utils.Adapter {
                     defaultMime = 'audio/mpeg';
                     defaultFilename = 'audio.mp3';
                     apiUrl = `${serverUrl}/api/sessions/${sessionid}/messages/send-audio`;
+                } else if (msgType === 'document') {
+                    defaultMime = 'application/pdf';
+                    defaultFilename = 'document.pdf';
+                    apiUrl = `${serverUrl}/api/sessions/${sessionid}/messages/send-document`;
                 } else {
                     apiUrl = `${serverUrl}/api/sessions/${sessionid}/messages/send-image`;
                 }
