@@ -1,4 +1,6 @@
-![Logo](admin/openwa.png)
+<p align="center">
+  <img src="admin/openwa.png" alt="OpenWA Logo" width="200"/>
+</p>
 
 # ioBroker.openwa
 
