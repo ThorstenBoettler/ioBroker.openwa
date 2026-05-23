@@ -119,6 +119,7 @@ class Openwa extends utils.Adapter {
 	/**
 	 * Called when another script (e.g. your Blockly script)
 	 * executes the command sendTo(“openwa.0”, “send”, { to: “...”, text: “...” }).
+	 *
 	 * @param {ioBroker.Message} obj - Message object
 	 */
 	onMessage(obj) {
@@ -137,6 +138,7 @@ class Openwa extends utils.Adapter {
 
 	/**
 	 * Asynchronous processing of the “send” command
+	 *
 	 * @param {ioBroker.Message} obj - Message object
 	 */
 	async handleSendMessage(obj) {
