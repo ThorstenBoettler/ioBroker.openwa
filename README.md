@@ -6,9 +6,14 @@
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.openwa.svg)](https://www.npmjs.com/package/iobroker.openwa)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.openwa.svg)](https://www.npmjs.com/package/iobroker.openwa)
-![Number of Installations](https://iobroker.live/badges/openwa-installed.svg)
-![Current version in stable repository](https://iobroker.live/badges/openwa-stable.svg)
-[![NPM](https://nodei.co/npm/iobroker.openwa.png?downloads=true)](https://nodei.co/npm/iobroker.openwa/)
+![GitHub license](https://img.shields.io/github/license/ThorstenBoettler/ioBroker.openwa?color=green)
+![GitHub last commit](https://img.shields.io/github/last-commit/ThorstenBoettler/ioBroker.openwa)
+
+<!-- [![NPM version](https://img.shields.io/npm/v/iobroker.openwa.svg)](https://www.npmjs.com/package/iobroker.openwa)-->
+<!-- [![Downloads](https://img.shields.io/npm/dm/iobroker.openwa.svg)](https://www.npmjs.com/package/iobroker.openwa) -->
+<!-- ![Number of Installations](https://iobroker.live/badges/openwa-installed.svg) -->
+<!-- ![Current version in stable repository](https://iobroker.live/badges/openwa-stable.svg) -->
+<!-- [![NPM](https://nodei.co/npm/iobroker.openwa.png?downloads=true)](https://nodei.co/npm/iobroker.openwa/) -->
 
 **Tests:** ![Test and Release](https://github.com/ThorstenBoettler/ioBroker.openwa/workflows/Test%20and%20Release/badge.svg)
 
