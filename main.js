@@ -118,13 +118,13 @@ class Openwa extends utils.Adapter {
             const messageText = obj.message.text;
             let rawNumber = obj.message.to || obj.message.phone;
 
-            if (!messageText) {
-                this.log.warn('Message discarded via Blockly: The message text is empty!');
-                if (obj.callback) {
-                    this.sendTo(obj.from, obj.command, { error: 'Empty message' }, obj.callback);
-                }
-                return;
-            }
+            //const chatType = obj.message.chatType || obj.message.type || 'private';
+            const chatType = obj.message.type || 'private';
+            const msgType = obj.message.msgType || 'text';
+            const mediaUrl = obj.message.url ? String(obj.message.url).trim() : '';
+            let mediaBase64 = obj.message.base64 ? String(obj.message.base64).trim() : '';
+            let mimeType = obj.message.mimeType || 'auto';
+            const captionText = obj.message.caption ? String(obj.message.caption).trim() : '';
 
             if (typeof rawNumber === 'string') {
                 rawNumber = rawNumber.trim();
@@ -139,7 +139,6 @@ class Openwa extends utils.Adapter {
             }
 
             let targetChatId = String(rawNumber);
-            const chatType = obj.message.type || 'private';
             if (!targetChatId.endsWith('@c.us') && !targetChatId.endsWith('@g.us')) {
                 if (chatType === 'group') {
                     targetChatId = `${targetChatId}@g.us`;
@@ -150,19 +149,62 @@ class Openwa extends utils.Adapter {
                 }
             }
 
-            this.log.info(`Send message via Blockly [Type: ${chatType}] to ${targetChatId}: '${messageText}'`);
+            let apiUrl = '';
+            let fetchBody = {};
 
-            const response = await fetch(`${serverUrl}/api/sessions/${sessionid}/messages/send-text`, {
+            if (msgType === 'image') {
+                if (mimeType === 'auto') {
+                    mimeType = 'image/png';
+                }
+
+                const fileData = mediaUrl;
+                const base64string = mediaBase64;
+                if (!fileData && !base64string) {
+                    this.log.warn('Message discarded via Blockly: For image messages, either URL or Base64 data must be provided!');
+                    if (obj.callback) {
+                        this.sendTo(obj.from, obj.command, { error: 'Missing image data (URL or Base64)' }, obj.callback);
+                    }
+                    return;
+                }
+
+                apiUrl = `${serverUrl}/api/sessions/${sessionid}/messages/send-image`;
+                fetchBody = {
+                    chatId: targetChatId,
+                    url: fileData,
+                    base64: base64string,
+                    mimetype: mimeType,
+                    filename: 'image.png',
+                    caption: captionText || messageText || '',
+                };
+
+                this.log.info(`Sending WhatsApp image via Blockly to ${targetChatId}`);
+                this.log.debug(`Fetch Body: ${JSON.stringify(fetchBody, null, 2)}`);
+            } else {
+                if (!messageText) {
+                    this.log.warn('Message discarded via Blockly: The message text is empty!');
+                    if (obj.callback) {
+                        this.sendTo(obj.from, obj.command, { error: 'Empty message' }, obj.callback);
+                    }
+                    return;
+                }
+                apiUrl = `${serverUrl}/api/sessions/${sessionid}/messages/send-text`;
+                fetchBody = {
+                    chatId: targetChatId,
+                    text: String(messageText),
+                };
+
+                this.log.info(`Sending WhatsApp text via Blockly [Type: ${chatType}] to ${targetChatId}: '${messageText}'`);
+            }
+
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'x-api-key': token,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    chatId: targetChatId,
-                    text: String(messageText),
-                }),
+                body: JSON.stringify(fetchBody),
             });
+
             const textResponse = await response.text();
             this.log.debug(`Raw Open-WA response: ${textResponse}`);
             let apiResponseData = {};
