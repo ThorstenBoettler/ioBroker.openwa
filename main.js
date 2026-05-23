@@ -50,10 +50,10 @@ class Openwa extends utils.Adapter {
 
 		try {
 			const response = await fetch(`${serverUrl}/api/auth/validate`, {
-				method: "POST",
+				method: 'POST',
 				headers: {
-					"x-api-key": `${token}`,
-					"Content-Type": "application/json"
+					'x-api-key': `${token}`,
+					'Content-Type': 'application/json',
 				}
 			});
 
@@ -179,7 +179,7 @@ class Openwa extends utils.Adapter {
                 method: 'POST',
                 headers: {
                     'x-api-key': token,
-                    'Content-Type':·'application/json',
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     chatId: targetChatId,
