@@ -114,20 +114,17 @@ class Openwa extends utils.Adapter {
 	 * @param {ioBroker.State | null | undefined} state - State object
 	 */
 	// async onStateChange(id, state) {
-    //    return;
-    // }
+	// return;
+	// }
 	/**
-	* Called when another script (e.g. your Blockly script)
-	* executes the command sendTo(“openwa.0”, “send”, { to: “...”, text: “...” }).
-	* @param {ioBroker.Message} obj
-	*/
+	.* Called when another script (e.g. your Blockly script)
+	.* executes the command sendTo(“openwa.0”, “send”, { to: “...”, text: “...” }).
+	.* @param {ioBroker.Message} obj - Message object
+	.*/
 	onMessage(obj) {
-		this.log.info(`Nachricht erhalten: ${JSON.stringify(obj)}`);
-
 		if (typeof obj !== "object" || !obj.message) {
 			return;
 		}
-
 		if (obj.command === "send") {
 			this.handleSendMessage(obj).catch((error) => {
 				this.log.error(`Critical error in handleSendMessage: ${error.message}`);
@@ -139,9 +136,9 @@ class Openwa extends utils.Adapter {
 	}
 
 	/**
-	* Asynchronous processing of the “send” command
-	* @param {ioBroker.Message} obj
-	*/
+	 * Asynchronous processing of the “send” command
+	 * @param {ioBroker.Message} obj - Message object
+	 */
 	async handleSendMessage(obj) {
 		const serverUrl = this.config.serverIp;
 		const token = this.config.apiToken;
