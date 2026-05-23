@@ -164,7 +164,8 @@ class Openwa extends utils.Adapter {
                         'Message discarded via Blockly: For image messages, either URL or Base64 data must be provided!',
                     );
                     if (obj.callback) {
-                        this.sendTo(obj.from,
+                        this.sendTo(
+                            obj.from,
                             obj.command,
                             { error: 'Missing image data (URL or Base64)' },
                             obj.callback,
@@ -199,7 +200,9 @@ class Openwa extends utils.Adapter {
                     text: String(messageText),
                 };
 
-                this.log.info(`Sending WhatsApp text via Blockly [Type: ${chatType}] to ${targetChatId}: '${messageText}'`);
+                this.log.info(
+                    `Sending WhatsApp text via Blockly [Type: ${chatType}] to ${targetChatId}: '${messageText}'`,
+                );
             }
 
             const response = await fetch(apiUrl, {
