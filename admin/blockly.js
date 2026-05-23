@@ -3,6 +3,8 @@
 'use strict';
 
 Blockly.Words['openwa']             = {'en': 'WhatsApp (Open-WA)',       'de': 'WhatsApp (Open-WA)'};
+Blockly.Words['openwa_private']     = {'en': 'Private Chat',             'de': 'Privater Chat'};
+Blockly.Words['openwa_group']       = {'en': 'Group Chat',               'de': 'Gruppen Chat'};
 Blockly.Words['openwa_message']     = {'en': 'message',                  'de': 'Meldung'};
 Blockly.Words['openwa_phone']       = {'en': 'Recipient (phone number)', 'de': 'Empfänger (Telefonnummer)'};
 Blockly.Words['openwa_anyInstance'] = {'en': 'all instances',            'de': 'Alle Instanzen'};
@@ -13,6 +15,7 @@ Blockly.Sendto.blocks['openwa'] =
     '<block type="openwa">'
     + '     <value name="INSTANCE">'
     + '     </value>'
+    + '     <field name="CHAT_TYPE">private</field>'
     + '     <value name="MESSAGE">'
     + '         <shadow type="text">'
     + '             <field name="TEXT">text</field>'
@@ -51,6 +54,12 @@ Blockly.Blocks['openwa'] = {
             .appendField(Blockly.Words['openwa'][systemLang])
             .appendField(new Blockly.FieldDropdown(options), 'INSTANCE');
 
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([
+                [Blockly.Words['openwa_private'][systemLang], 'private'],
+                [Blockly.Words['openwa_group'][systemLang], 'group']
+            ]), "CHAT_TYPE");
+
         this.appendValueInput('MESSAGE')
             .appendField(Blockly.Words['openwa_message'][systemLang]);
 
@@ -73,6 +82,7 @@ Blockly.Blocks['openwa'] = {
 
 Blockly.JavaScript['openwa'] = function(block) {
     var dropdown_instance = block.getFieldValue('INSTANCE') || '';
+    var dropdown_type = block.getFieldValue('CHAT_TYPE') || 'private';
     var value_message = Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) || "''";
     var value_phone = Blockly.JavaScript.valueToCode(block, 'PHONE', Blockly.JavaScript.ORDER_ATOMIC) || "''";
 
@@ -95,10 +105,11 @@ Blockly.JavaScript['openwa'] = function(block) {
     branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
 
     var adapterInstance = 'openwa' + (dropdown_instance ? dropdown_instance : '.0');
+    var messageObj = "{ to: " + value_phone + ", text: " + value_message + ", type: '" + dropdown_type + "' }";
 
     if (branch) {
-        return "sendTo('" + adapterInstance + "', 'send', { to: " + value_phone + ", text: " + value_message + " }, async function (" + variable_name + ") {\n" + branch + "});\n";
+        return "sendTo('" + adapterInstance + "', 'send', " + messageObj + ", async function (" + variable_name + ") {\n" + branch + "});\n";
     } else {
-        return "sendTo('" + adapterInstance + "', 'send', { to: " + value_phone + ", text: " + value_message + " });\n";
+        return "sendTo('" + adapterInstance + "', 'send', " + messageObj + ");\n";
     }
 };

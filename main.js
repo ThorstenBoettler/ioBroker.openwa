@@ -139,11 +139,18 @@ class Openwa extends utils.Adapter {
             }
 
             let targetChatId = String(rawNumber);
+            const chatType = obj.message.type || 'private';
             if (!targetChatId.endsWith('@c.us') && !targetChatId.endsWith('@g.us')) {
-                targetChatId = `${targetChatId}@c.us`;
+                if (chatType === 'group') {
+                    targetChatId = `${targetChatId}@g.us`;
+                    this.log.info(`Recognized target as Group. Appended @g.us`);
+                } else {
+                    targetChatId = `${targetChatId}@c.us`;
+                    this.log.info(`Recognized target as Private Chat. Appended @c.us`);
+                }
             }
 
-            this.log.info(`Send a WhatsApp message via Blockly to ${targetChatId}: '${messageText}'`);
+        this.log.info(`Send a WhatsApp message via Blockly [Type: ${chatType}] to ${targetChatId}: '${messageText}'`);
 
             const response = await fetch(`${serverUrl}/api/sessions/${sessionid}/messages/send-text`, {
                 method: 'POST',
