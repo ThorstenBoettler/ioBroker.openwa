@@ -150,7 +150,9 @@ class Openwa extends utils.Adapter {
 
 			if (!messageText) {
 				this.log.warn('Message discarded via Blockly: The message text is empty!');
-				if (obj.callback) {this.sendTo(obj.from, obj.command, { error: 'Empty message' }, obj.callback);}
+				if (obj.callback) {
+					this.sendTo(obj.from, obj.command, { error: 'Empty message' }, obj.callback);
+				}
 				return;
 			}
 
@@ -160,7 +162,9 @@ class Openwa extends utils.Adapter {
 
 			if (!rawNumber) {
 				this.log.warn('Message discarded via Blockly: The recipient number is empty!');
-				if (obj.callback) {this.sendTo(obj.from, obj.command, { error: 'Empty recipient' }, obj.callback);}
+				if (obj.callback) {
+					this.sendTo(obj.from, obj.command, { error: 'Empty recipient' }, obj.callback);
+				}
 				return;
 			}
 
@@ -185,15 +189,22 @@ class Openwa extends utils.Adapter {
 
 			if (response.ok) {
 				this.log.info('Message successfully sent to Open-WA.');
-				if (obj.callback) this.sendTo(obj.from, obj.command, { status: 'ok' }, obj.callback);
+				if (obj.callback) {
+					this.sendTo(obj.from, obj.command, { status: 'ok' }, obj.callback);
+				}
+				}
 			} else {
 				this.log.error(`Error sending message: Open-WA responded with status ${response.status}`);
-				if (obj.callback) this.sendTo(obj.from, obj.command, { error: `HTTP ${response.status}` }, obj.callback);
+				if (obj.callback) {
+					this.sendTo(obj.from, obj.command, { error: `HTTP ${response.status}` }, obj.callback);
+				}
 			}
 
 		} catch (error) {
 			this.log.error(`Send failed via onMessage: ${error.message}`);
-			if (obj.callback) this.sendTo(obj.from, obj.command, { error: error.message }, obj.callback);
+			if (obj.callback) {
+				this.sendTo(obj.from, obj.command, { error: error.message }, obj.callback);
+			}
 		}
 	}
 }
