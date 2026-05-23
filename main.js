@@ -12,210 +12,204 @@ const utils = require('@iobroker/adapter-core');
 // const fs = require('fs');
 
 class Openwa extends utils.Adapter {
-	/**
-	 * @param {Partial<utils.AdapterOptions>} [options] - Adapter options
-	 */
-	constructor(options) {
-		super({
-			...options,
-			name: 'openwa',
-		});
-		this.on('ready', this.onReady.bind(this));
-		// this.on('stateChange', this.onStateChange.bind(this));
-		// this.on('objectChange', this.onObjectChange.bind(this));
-		this.on('message', this.onMessage.bind(this));
-		this.on('unload', this.onUnload.bind(this));
-	}
+    /**
+     * @param {Partial<utils.AdapterOptions>} [options] - Adapter options
+     */
+    constructor(options) {
+        super({
+            ...options,
+            name: 'openwa',
+        });
+        this.on('ready', this.onReady.bind(this));
+        // this.on('stateChange', this.onStateChange.bind(this));
+        // this.on('objectChange', this.onObjectChange.bind(this));
+        this.on('message', this.onMessage.bind(this));
+        this.on('unload', this.onUnload.bind(this));
+    }
 
-	/**
-	 * Is called when databases are connected and adapter received configuration.
-	 */
-	async onReady() {
-		this.setState('info.connection', false, true);
-		this.subscribeStates('sendTrigger');
+    /**
+     * Is called when databases are connected and adapter received configuration.
+     */
+    async onReady() {
+        this.setState('info.connection', false, true);
+        this.subscribeStates('sendTrigger');
 
-		this.connectToOpenWa();
-	}
+        this.connectToOpenWa();
+    }
 
-	async connectToOpenWa() {
-		const serverUrl = this.config.serverIp;
-		const token = this.config.apiToken;
+    async connectToOpenWa() {
+        const serverUrl = this.config.serverIp;
+        const token = this.config.apiToken;
 
-		if (!serverUrl) {
-			this.log.warn('No server URL has been entered. Please configure the adapter!');
-			return;
-		}
+        if (!serverUrl) {
+            this.log.warn('No server URL has been entered. Please configure the adapter!');
+            return;
+        }
 
-		this.log.info(`Connect to Open-WA Server: ${serverUrl}`);
+        this.log.info(`Connect to Open-WA Server: ${serverUrl}`);
 
-		try {
-			const response = await fetch(`${serverUrl}/api/auth/validate`, {
-				method: 'POST',
-				headers: {
-					'x-api-key': `${token}`,
-					'Content-Type': 'application/json',
-				},
-			});
+        try {
+            const response = await fetch(`${serverUrl}/api/auth/validate`, {
+                method: 'POST',
+                headers: {
+                    'x-api-key': `${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
 
-			if (response.ok) {
-				this.log.info('Successfully connected to Open-WA!');
-				this.setState('info.connection', true, true);
-			} else {
-				this.log.error(`Connection error: Open-WA responded with status ${response.status} -> Check API Key!`);
-				this.setState('info.connection', false, true);
-			}
-		} catch (error) {
-			this.log.error(`Connection failed: ${error.message}`);
-			this.setState('info.connection', false, true);
-		}
-	}
+            if (response.ok) {
+                this.log.info('Successfully connected to Open-WA!');
+                this.setState('info.connection', true, true);
+            } else {
+                this.log.error(`Connection error: Open-WA responded with status ${response.status} -> Check API Key!`);
+                this.setState('info.connection', false, true);
+            }
+        } catch (error) {
+            this.log.error(`Connection failed: ${error.message}`);
+            this.setState('info.connection', false, true);
+        }
+    }
 
-	/**
-	 * Is called when adapter shuts down - callback has to be called under any circumstances!
-	 *
-	 * @param {() => void} callback - Callback function
-	 */
-	onUnload(callback) {
-		try {
-			// Here you must clear all timeouts or intervals that may still be active
-			// clearTimeout(timeout1);
-			// clearTimeout(timeout2);
-			// ...
-			// clearInterval(interval1);
+    /**
+     * Is called when adapter shuts down - callback has to be called under any circumstances!
+     *
+     * @param {() => void} callback - Callback function
+     */
+    onUnload(callback) {
+        try {
+            callback();
+        } catch (error) {
+            this.log.error(`Error during unloading: ${error.message}`);
+            callback();
+        }
+    }
 
-			callback();
-		} catch (error) {
-			this.log.error(`Error during unloading: ${error.message}`);
-			callback();
-		}
-	}
+    /**
+     * Called when another script (e.g. your Blockly script)
+     * executes the command sendTo(“openwa.0”, “send”, { to: “...”, text: “...” }).
+     *
+     * @param {ioBroker.Message} obj - Message object
+     */
+    onMessage(obj) {
+        if (typeof obj !== 'object' || !obj.message) {
+            return;
+        }
+        if (obj.command === 'send') {
+            this.handleSendMessage(obj).catch(error => {
+                this.log.error(`Critical error in handleSendMessage: ${error.message}`);
+                if (obj && obj.callback) {
+                    this.sendTo(obj.from, obj.command, { error: error.message }, obj.callback);
+                }
+            });
+        }
+    }
 
-	// If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-	// You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-	// /**
-	//  * Is called if a subscribed object changes
-	//  * @param {string} id
-	//  * @param {ioBroker.Object | null | undefined} obj
-	//  */
-	// onObjectChange(id, obj) {
-	// 	if (obj) {
-	// 		// The object was changed
-	// 		this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-	// 	} else {
-	// 		// The object was deleted
-	// 		this.log.info(`object ${id} deleted`);
-	// 	}
-	// }
+    /**
+     * Asynchronous processing of the “send” command
+     *
+     * @param {ioBroker.Message} obj - Message object
+     */
+    async handleSendMessage(obj) {
+        const serverUrl = this.config.serverIp;
+        const token = this.config.apiToken;
+        const sessionid = this.config.sessionID;
 
-	/**
-	 * Is called if a subscribed state changes
-	 *
-	 * @param {string} id - State ID
-	 * @param {ioBroker.State | null | undefined} state - State object
-	 */
-	// async onStateChange(id, state) {
-	// return;
-	// }
-	/**
-	 * Called when another script (e.g. your Blockly script)
-	 * executes the command sendTo(“openwa.0”, “send”, { to: “...”, text: “...” }).
-	 *
-	 * @param {ioBroker.Message} obj - Message object
-	 */
-	onMessage(obj) {
-		if (typeof obj !== 'object' || !obj.message) {
-			return;
-		}
-		if (obj.command === 'send') {
-			this.handleSendMessage(obj).catch(error => {
-				this.log.error(`Critical error in handleSendMessage: ${error.message}`);
-				if (obj && obj.callback) {
-					this.sendTo(obj.from, obj.command, { error: error.message }, obj.callback);
-				}
-			});
-		}
-	}
+        try {
+            const messageText = obj.message.text;
+            let rawNumber = obj.message.to || obj.message.phone;
 
-	/**
-	 * Asynchronous processing of the “send” command
-	 *
-	 * @param {ioBroker.Message} obj - Message object
-	 */
-	async handleSendMessage(obj) {
-		const serverUrl = this.config.serverIp;
-		const token = this.config.apiToken;
-		const sessionid = this.config.sessionID;
+            if (!messageText) {
+                this.log.warn('Message discarded via Blockly: The message text is empty!');
+                if (obj.callback) {
+                    this.sendTo(obj.from, obj.command, { error: 'Empty message' }, obj.callback);
+                }
+                return;
+            }
 
-		try {
-			const messageText = obj.message.text;
-			let rawNumber = obj.message.to || obj.message.phone;
+            if (typeof rawNumber === 'string') {
+                rawNumber = rawNumber.trim();
+            }
 
-			if (!messageText) {
-				this.log.warn('Message discarded via Blockly: The message text is empty!');
-				if (obj.callback) {
-					this.sendTo(obj.from, obj.command, { error: 'Empty message' }, obj.callback);
-				}
-				return;
-			}
+            if (!rawNumber) {
+                this.log.warn('Message discarded via Blockly: The recipient number is empty!');
+                if (obj.callback) {
+                    this.sendTo(obj.from, obj.command, { error: 'Empty recipient' }, obj.callback);
+                }
+                return;
+            }
 
-			if (typeof rawNumber === 'string') {
-				rawNumber = rawNumber.trim();
-			}
+            let targetChatId = String(rawNumber);
+            if (!targetChatId.endsWith('@c.us') && !targetChatId.endsWith('@g.us')) {
+                targetChatId = `${targetChatId}@c.us`;
+            }
 
-			if (!rawNumber) {
-				this.log.warn('Message discarded via Blockly: The recipient number is empty!');
-				if (obj.callback) {
-					this.sendTo(obj.from, obj.command, { error: 'Empty recipient' }, obj.callback);
-				}
-				return;
-			}
+            this.log.info(`Send a WhatsApp message via Blockly to ${targetChatId}: '${messageText}'`);
 
-			let targetChatId = String(rawNumber);
-			if (!targetChatId.endsWith('@c.us') && !targetChatId.endsWith('@g.us')) {
-				targetChatId = `${targetChatId}@c.us`;
-			}
-
-			this.log.info(`Send a WhatsApp message via Blockly to ${targetChatId}: '${messageText}'`);
-
-			const response = await fetch(`${serverUrl}/api/sessions/${sessionid}/messages/send-text`, {
-				method: 'POST',
-				headers: {
-					'x-api-key': token,
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					chatId: targetChatId,
-					text: String(messageText),
-				}),
-			});
-
-			if (response.ok) {
-				this.log.info('Message successfully sent to Open-WA.');
-				if (obj.callback) {
-					this.sendTo(obj.from, obj.command, { status: 'ok' }, obj.callback);
-				}
-			} else {
-				this.log.error(`Error sending message: Open-WA responded with status ${response.status}`);
-				if (obj.callback) {
-					this.sendTo(obj.from, obj.command, { error: `HTTP ${response.status}` }, obj.callback);
-				}
-			}
-		} catch (error) {
-			this.log.error(`Send failed via onMessage: ${error.message}`);
-			if (obj.callback) {
-				this.sendTo(obj.from, obj.command, { error: error.message }, obj.callback);
-			}
-		}
-	}
+            const response = await fetch(`${serverUrl}/api/sessions/${sessionid}/messages/send-text`, {
+                method: 'POST',
+                headers: {
+                    'x-api-key': token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chatId: targetChatId,
+                    text: String(messageText),
+                }),
+            });
+            const textResponse = await response.text();
+            this.log.debug(`Raw Open-WA response: ${textResponse}`);
+            let apiResponseData = {};
+            try {
+                if (textResponse && textResponse.trim()) {
+                    apiResponseData = JSON.parse(textResponse);
+                }
+            } catch (e) {
+                this.log.error(`Could not parse API response as JSON: ${e.message}`);
+                apiResponseData = { rawText: textResponse };
+            }
+            if (response.ok) {
+                this.log.info('Message successfully sent to Open-WA.');
+                const answerObj = {
+                    success: true,
+                    status: response.status,
+                    id: apiResponseData?.messageId || apiResponseData?.id || null,
+                    timestamp: apiResponseData?.timestamp || null,
+                };
+                this.log.debug(`[DEBUG-CHECK] Generated answerObj: ${JSON.stringify(answerObj)}`);
+                this.log.debug(`[DEBUG-CHECK] Is obj.callback present? -> ${!!obj.callback}`);
+                if (obj.callback) {
+                    this.log.debug(`Sending stringified answer to Blockly: ${JSON.stringify(answerObj)}`);
+                    this.sendTo(obj.from, obj.command, JSON.stringify(answerObj), obj.callback);
+                } else {
+                    this.log.warn('No a callback function! Data cannot be returned to the script.');
+                }
+            } else {
+                this.log.error(`Error sending message: Open-WA responded with status ${response.status}`);
+                if (obj.callback) {
+                    const errorObj = {
+                        success: false,
+                        status: response.status,
+                        error: apiResponseData,
+                    };
+                    this.sendTo(obj.from, obj.command, JSON.stringify(errorObj), obj.callback);
+                }
+            }
+        } catch (error) {
+            this.log.error(`Send failed via onMessage: ${error.message}`);
+            if (obj.callback) {
+                this.sendTo(obj.from, obj.command, { error: error.message }, obj.callback);
+            }
+        }
+    }
 }
 
 if (require.main !== module) {
-	// Export the constructor in compact mode
-	/**
-	 * @param {Partial<utils.AdapterOptions>} [options] - Adapter options
-	 */
-	module.exports = options => new Openwa(options);
+    // Export the constructor in compact mode
+    /**
+     * @param {Partial<utils.AdapterOptions>} [options] - Adapter options
+     */
+    module.exports = options => new Openwa(options);
 } else {
-	// otherwise start the instance directly
-	new Openwa();
+    // otherwise start the instance directly
+    new Openwa();
 }
