@@ -181,9 +181,7 @@ class Openwa extends utils.Adapter {
                     this.log.debug(`Sending stringified answer to Blockly: ${JSON.stringify(answerObj)}`);
                     this.sendTo(obj.from, obj.command, JSON.stringify(answerObj), obj.callback);
                 } else {
-                    this.log.warn(
-                        'Blockly did not provide a callback function! Data cannot be returned to the script.'
-                    );
+                    this.log.warn('No a callback function! Data cannot be returned to the script.');
                 }
             } else {
                 this.log.error(`Error sending message: Open-WA responded with status ${response.status}`);
