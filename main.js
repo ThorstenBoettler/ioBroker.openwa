@@ -160,9 +160,15 @@ class Openwa extends utils.Adapter {
                 const fileData = mediaUrl;
                 const base64string = mediaBase64;
                 if (!fileData && !base64string) {
-                    this.log.warn('Message discarded via Blockly: For image messages, either URL or Base64 data must be provided!');
+                    this.log.warn(
+                        'Message discarded via Blockly: For image messages, either URL or Base64 data must be provided!',
+                    );
                     if (obj.callback) {
-                        this.sendTo(obj.from, obj.command, { error: 'Missing image data (URL or Base64)' }, obj.callback);
+                        this.sendTo(obj.from,
+                            obj.command,
+                            { error: 'Missing image data (URL or Base64)' },
+                            obj.callback,
+                        );
                     }
                     return;
                 }
