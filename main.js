@@ -118,7 +118,6 @@ class Openwa extends utils.Adapter {
             const messageText = obj.message.text;
             let rawNumber = obj.message.to || obj.message.phone;
 
-            //const chatType = obj.message.chatType || obj.message.type || 'private';
             const chatType = obj.message.type || 'private';
             const msgType = obj.message.msgType || 'text';
             const mediaUrl = obj.message.url ? String(obj.message.url).trim() : '';
@@ -152,13 +151,24 @@ class Openwa extends utils.Adapter {
             let apiUrl = '';
             let fetchBody = {};
 
-            if (msgType === 'image') {
+            if (msgType === 'image' || msgType === 'video') {
+                let defaultMime = 'image/png';
+                let defaultFilename = 'image.png';
+
+                if (msgType === 'video') {
+                    defaultMime = 'video/mp4';
+                    defaultFilename = 'video.mp4';
+                    apiUrl = `${serverUrl}/api/sessions/${sessionid}/messages/send-video`;
+                } else {
+                    apiUrl = `${serverUrl}/api/sessions/${sessionid}/messages/send-image`;
+                }
                 if (mimeType === 'auto') {
-                    mimeType = 'image/png';
+                    mimeType = defaultMime;
                 }
 
                 const fileData = mediaUrl;
                 const base64string = mediaBase64;
+
                 if (!fileData && !base64string) {
                     this.log.warn(
                         'Message discarded via Blockly: For image messages, either URL or Base64 data must be provided!',
@@ -180,7 +190,7 @@ class Openwa extends utils.Adapter {
                     url: fileData,
                     base64: base64string,
                     mimetype: mimeType,
-                    filename: 'image.png',
+                    filename: defaultFilename,
                     caption: captionText || messageText || '',
                 };
 
