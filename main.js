@@ -150,7 +150,7 @@ class Openwa extends utils.Adapter {
                 }
             }
 
-        this.log.info(`Send message via Blockly [Type: ${chatType}] to ${targetChatId}: '${messageText}'`);
+            this.log.info(`Send message via Blockly [Type: ${chatType}] to ${targetChatId}: '${messageText}'`);
 
             const response = await fetch(`${serverUrl}/api/sessions/${sessionid}/messages/send-text`, {
                 method: 'POST',
