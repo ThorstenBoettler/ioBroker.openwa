@@ -122,11 +122,11 @@ class Openwa extends utils.Adapter {
 	.* @param {ioBroker.Message} obj - Message object
 	.*/
 	onMessage(obj) {
-		if (typeof obj !== "object" || !obj.message) {
+		if (typeof obj !== 'object' || !obj.message) {
 			return;
 		}
-		if (obj.command === "send") {
-			this.handleSendMessage(obj).catch((error) => {
+		if (obj.command === 'send') {
+			this.handleSendMessage(obj).catch(error => {
 				this.log.error(`Critical error in handleSendMessage: ${error.message}`);
 				if (obj && obj.callback) {
 					this.sendTo(obj.from, obj.command, { error: error.message }, obj.callback);
@@ -149,27 +149,27 @@ class Openwa extends utils.Adapter {
 			let rawNumber = obj.message.to || obj.message.phone;
 
 			if (!messageText) {
-				this.log.warn("Message discarded via Blockly: The message text is empty!");
-				if (obj.callback) this.sendTo(obj.from, obj.command, { error: "Empty message" }, obj.callback);
+				this.log.warn('Message discarded via Blockly: The message text is empty!');
+				if (obj.callback) {this.sendTo(obj.from, obj.command, { error: 'Empty message' }, obj.callback);}
 				return;
 			}
 
-			if (typeof rawNumber === "string") {
+			if (typeof rawNumber === 'string') {
 				rawNumber = rawNumber.trim();
 			}
 
 			if (!rawNumber) {
-				this.log.warn("Message discarded via Blockly: The recipient number is empty!");
-				if (obj.callback) this.sendTo(obj.from, obj.command, { error: "Empty recipient" }, obj.callback);
+				this.log.warn('Message discarded via Blockly: The recipient number is empty!');
+				if (obj.callback) {this.sendTo(obj.from, obj.command, { error: 'Empty recipient' }, obj.callback);}
 				return;
 			}
 
 			let targetChatId = String(rawNumber);
-			if (!targetChatId.endsWith("@c.us") && !targetChatId.endsWith("@g.us")) {
+			if (!targetChatId.endsWith('@c.us') && !targetChatId.endsWith('@g.us')) {
 				targetChatId = `${targetChatId}@c.us`;
 			}
 
-			this.log.info(`Send a WhatsApp message via Blockly to ${targetChatId}: "${messageText}"`);
+			this.log.info(`Send a WhatsApp message via Blockly to ${targetChatId}: '${messageText}'`);
 
 			const response = await fetch(`${serverUrl}/api/sessions/${sessionid}/messages/send-text`, {
 				method: 'POST',
@@ -179,14 +179,13 @@ class Openwa extends utils.Adapter {
 				},
 				body: JSON.stringify({
 					chatId: targetChatId,
-					text: String(messageText)
-				})
+					text: String(messageText),
+				}),
 			});
 
 			if (response.ok) {
-				this.log.info("Message successfully sent to Open-WA.");
-				// Falls das Blockly-Skript auf eine Antwort wartet, senden wir Erfolg zurück
-				if (obj.callback) this.sendTo(obj.from, obj.command, { status: "ok" }, obj.callback);
+				this.log.info('Message successfully sent to Open-WA.');
+				if (obj.callback) this.sendTo(obj.from, obj.command, { status: 'ok' }, obj.callback);
 			} else {
 				this.log.error(`Error sending message: Open-WA responded with status ${response.status}`);
 				if (obj.callback) this.sendTo(obj.from, obj.command, { error: `HTTP ${response.status}` }, obj.callback);
