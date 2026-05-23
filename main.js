@@ -1,8 +1,8 @@
 'use strict';
 
 /*
-* Created with @iobroker/create-adapter v3.1.5
-*/
+ * Created with @iobroker/create-adapter v3.1.5
+ */
 
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
@@ -21,7 +21,7 @@ class Openwa extends utils.Adapter {
 			name: 'openwa',
 		});
 		this.on('ready', this.onReady.bind(this));
-		this.on('stateChange', this.onStateChange.bind(this));
+		// this.on('stateChange', this.onStateChange.bind(this));
 		// this.on('objectChange', this.onObjectChange.bind(this));
 		this.on('message', this.onMessage.bind(this));
 		this.on('unload', this.onUnload.bind(this));
@@ -54,7 +54,7 @@ class Openwa extends utils.Adapter {
 				headers: {
 					'x-api-key': `${token}`,
 					'Content-Type': 'application/json',
-				}
+				},
 			});
 
 			if (response.ok) {
@@ -64,7 +64,6 @@ class Openwa extends utils.Adapter {
 				this.log.error(`Connection error: Open-WA responded with status ${response.status} -> Check API Key!`);
 				this.setState('info.connection', false, true);
 			}
-
 		} catch (error) {
 			this.log.error(`Connection failed: ${error.message}`);
 			this.setState('info.connection', false, true);
@@ -114,93 +113,93 @@ class Openwa extends utils.Adapter {
 	 * @param {string} id - State ID
 	 * @param {ioBroker.State | null | undefined} state - State object
 	 */
-	async onStateChange(id, state) {
-        return;
-    }
+	// async onStateChange(id, state) {
+    //    return;
+    // }
 	/**
-    * Called when another script (e.g. your Blockly script)
-    * executes the command sendTo(“openwa.0”, “send”, { to: “...”, text: “...” }).
-    * @param {ioBroker.Message} obj
-    */
-    onMessage(obj) {
-        this.log.info(`Nachricht erhalten: ${JSON.stringify(obj)}`);
+	* Called when another script (e.g. your Blockly script)
+	* executes the command sendTo(“openwa.0”, “send”, { to: “...”, text: “...” }).
+	* @param {ioBroker.Message} obj
+	*/
+	onMessage(obj) {
+		this.log.info(`Nachricht erhalten: ${JSON.stringify(obj)}`);
 
-        if (typeof obj !== "object" || !obj.message) {
-            return;
-        }
+		if (typeof obj !== "object" || !obj.message) {
+			return;
+		}
 
-        if (obj.command === "send") {
-            this.handleSendMessage(obj).catch((error) => {
-                this.log.error(`Critical error in handleSendMessage: ${error.message}`);
-                if (obj && obj.callback) {
-                    this.sendTo(obj.from, obj.command, { error: error.message }, obj.callback);
-                }
-            });
-        }
-    }
+		if (obj.command === "send") {
+			this.handleSendMessage(obj).catch((error) => {
+				this.log.error(`Critical error in handleSendMessage: ${error.message}`);
+				if (obj && obj.callback) {
+					this.sendTo(obj.from, obj.command, { error: error.message }, obj.callback);
+				}
+			});
+		}
+	}
 
-    /**
-     * Asynchronous processing of the “send” command
-     * @param {ioBroker.Message} obj
-     */
-    async handleSendMessage(obj) {
-        const serverUrl = this.config.serverIp;
-        const token = this.config.apiToken;
-        const sessionid = this.config.sessionID;
+	/**
+	* Asynchronous processing of the “send” command
+	* @param {ioBroker.Message} obj
+	*/
+	async handleSendMessage(obj) {
+		const serverUrl = this.config.serverIp;
+		const token = this.config.apiToken;
+		const sessionid = this.config.sessionID;
 
-        try {
-            const messageText = obj.message.text;
-            let rawNumber = obj.message.to || obj.message.phone;
+		try {
+			const messageText = obj.message.text;
+			let rawNumber = obj.message.to || obj.message.phone;
 
-            if (!messageText) {
-                this.log.warn("Message discarded via Blockly: The message text is empty!");
-                if (obj.callback) this.sendTo(obj.from, obj.command, { error: "Empty message" }, obj.callback);
-                return;
-            }
+			if (!messageText) {
+				this.log.warn("Message discarded via Blockly: The message text is empty!");
+				if (obj.callback) this.sendTo(obj.from, obj.command, { error: "Empty message" }, obj.callback);
+				return;
+			}
 
-            if (typeof rawNumber === "string") {
-                rawNumber = rawNumber.trim();
-            }
+			if (typeof rawNumber === "string") {
+				rawNumber = rawNumber.trim();
+			}
 
-            if (!rawNumber) {
-                this.log.warn("Message discarded via Blockly: The recipient number is empty!");
-                if (obj.callback) this.sendTo(obj.from, obj.command, { error: "Empty recipient" }, obj.callback);
-                return;
-            }
+			if (!rawNumber) {
+				this.log.warn("Message discarded via Blockly: The recipient number is empty!");
+				if (obj.callback) this.sendTo(obj.from, obj.command, { error: "Empty recipient" }, obj.callback);
+				return;
+			}
 
-            let targetChatId = String(rawNumber);
-            if (!targetChatId.endsWith("@c.us") && !targetChatId.endsWith("@g.us")) {
-                targetChatId = `${targetChatId}@c.us`;
-            }
+			let targetChatId = String(rawNumber);
+			if (!targetChatId.endsWith("@c.us") && !targetChatId.endsWith("@g.us")) {
+				targetChatId = `${targetChatId}@c.us`;
+			}
 
-            this.log.info(`Send a WhatsApp message via Blockly to ${targetChatId}: "${messageText}"`);
+			this.log.info(`Send a WhatsApp message via Blockly to ${targetChatId}: "${messageText}"`);
 
-            const response = await fetch(`${serverUrl}/api/sessions/${sessionid}/messages/send-text`, {
-                method: 'POST',
-                headers: {
-                    'x-api-key': token,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chatId: targetChatId,
-                    text: String(messageText)
-                })
-            });
+			const response = await fetch(`${serverUrl}/api/sessions/${sessionid}/messages/send-text`, {
+				method: 'POST',
+				headers: {
+					'x-api-key': token,
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					chatId: targetChatId,
+					text: String(messageText)
+				})
+			});
 
-            if (response.ok) {
-                this.log.info("Message successfully sent to Open-WA.");
-                // Falls das Blockly-Skript auf eine Antwort wartet, senden wir Erfolg zurück
-                if (obj.callback) this.sendTo(obj.from, obj.command, { status: "ok" }, obj.callback);
-            } else {
-                this.log.error(`Error sending message: Open-WA responded with status ${response.status}`);
-                if (obj.callback) this.sendTo(obj.from, obj.command, { error: `HTTP ${response.status}` }, obj.callback);
-            }
+			if (response.ok) {
+				this.log.info("Message successfully sent to Open-WA.");
+				// Falls das Blockly-Skript auf eine Antwort wartet, senden wir Erfolg zurück
+				if (obj.callback) this.sendTo(obj.from, obj.command, { status: "ok" }, obj.callback);
+			} else {
+				this.log.error(`Error sending message: Open-WA responded with status ${response.status}`);
+				if (obj.callback) this.sendTo(obj.from, obj.command, { error: `HTTP ${response.status}` }, obj.callback);
+			}
 
-        } catch (error) {
-            this.log.error(`Send failed via onMessage: ${error.message}`);
-            if (obj.callback) this.sendTo(obj.from, obj.command, { error: error.message }, obj.callback);
-        }
-    }
+		} catch (error) {
+			this.log.error(`Send failed via onMessage: ${error.message}`);
+			if (obj.callback) this.sendTo(obj.from, obj.command, { error: error.message }, obj.callback);
+		}
+	}
 }
 
 if (require.main !== module) {
