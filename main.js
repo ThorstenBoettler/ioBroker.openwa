@@ -173,7 +173,7 @@ class Openwa extends utils.Adapter {
                     success: true,
                     status: response.status,
                     id: apiResponseData?.messageId || apiResponseData?.id || null,
-                    timestamp: apiResponseData?.timestamp || null
+                    timestamp: apiResponseData?.timestamp || null,
                 };
                 this.log.debug(`[DEBUG-CHECK] Generated answerObj: ${JSON.stringify(answerObj)}`);
                 this.log.debug(`[DEBUG-CHECK] Is obj.callback present? -> ${!!obj.callback}`);
@@ -189,7 +189,7 @@ class Openwa extends utils.Adapter {
                     const errorObj = {
                         success: false,
                         status: response.status,
-                        error: apiResponseData
+                        error: apiResponseData,
                     };
                     this.sendTo(obj.from, obj.command, JSON.stringify(errorObj), obj.callback);
                 }
