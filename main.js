@@ -192,7 +192,6 @@ class Openwa extends utils.Adapter {
 				if (obj.callback) {
 					this.sendTo(obj.from, obj.command, { status: 'ok' }, obj.callback);
 				}
-				}
 			} else {
 				this.log.error(`Error sending message: Open-WA responded with status ${response.status}`);
 				if (obj.callback) {
