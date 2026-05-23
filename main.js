@@ -117,10 +117,10 @@ class Openwa extends utils.Adapter {
 	// return;
 	// }
 	/**
-	.* Called when another script (e.g. your Blockly script)
-	.* executes the command sendTo(“openwa.0”, “send”, { to: “...”, text: “...” }).
-	.* @param {ioBroker.Message} obj - Message object
-	.*/
+	 * Called when another script (e.g. your Blockly script)
+	 * executes the command sendTo(“openwa.0”, “send”, { to: “...”, text: “...” }).
+	 * @param {ioBroker.Message} obj - Message object
+	 */
 	onMessage(obj) {
 		if (typeof obj !== 'object' || !obj.message) {
 			return;
@@ -198,7 +198,6 @@ class Openwa extends utils.Adapter {
 					this.sendTo(obj.from, obj.command, { error: `HTTP ${response.status}` }, obj.callback);
 				}
 			}
-
 		} catch (error) {
 			this.log.error(`Send failed via onMessage: ${error.message}`);
 			if (obj.callback) {
