@@ -14,7 +14,7 @@
 
 ## ioBroker Adapter for Open-WA (WhatsApp)
 
-This adapter connects **ioBroker** to a running [Open-WA](https://github.com/open-wa/wa-automate-nodejs) instance, enabling you to send WhatsApp messages directly from Blockly scripts, JavaScript scripts, and automations.
+This adapter connects **ioBroker** to a running [Open-WA](https://github.com/rmyndharis/OpenWA) instance, enabling you to send WhatsApp messages directly from Blockly scripts, JavaScript scripts, and automations.
 
 > **Disclaimer:** This adapter is not an official product of WhatsApp or Meta. Use it at your own risk and in compliance with the [WhatsApp Terms of Service](https://www.whatsapp.com/legal/terms-of-service). "WhatsApp" is a registered trademark of Meta Platforms, Inc.
 
