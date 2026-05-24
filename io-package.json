@@ -1,8 +1,34 @@
 {
 	"common": {
 		"name": "openwa",
-		"version": "0.0.2",
+		"version": "0.0.3",
 		"news": {
+			"0.0.3": {
+				"en": "Added multi-language support for Admin UI and Blockly blocks",
+				"de": "Mehrsprachige Unterstützung für Admin-UI und Blockly-Blöcke hinzugefügt",
+				"ru": "Добавлена многоязычная поддержка для Admin UI и блоков Blockly",
+				"pt": "Adicionado suporte multi-idioma para Admin UI e blocos Blockly",
+				"nl": "Meertalige ondersteuning toegevoegd voor Admin UI en Blockly-blokken",
+				"fr": "Ajout du support multilingue pour l'interface administrative et les blocs Blockly",
+				"it": "Aggiunto il supporto multilingua per l'interfaccia utente amministratore e i blocchi Blockly",
+				"es": "Añadido soporte multi-idioma para la interfaz de administración y los bloques Blockly",
+				"pl": "Dodano obsługę wielu języków dla panelu administratora i bloków Blockly",
+				"uk": "Додано багатомовну підтримку для інтерфейсу адміністратора oraz блоків Blockly",
+				"zh-cn": "增加了对管理界面和 Blockly 模块的多语言支持"
+		  	},
+		  	"0.0.2": {
+				"en": "Optimized README badges and package files configuration",
+				"de": "README-Badges und package.json-Dateistruktur optimiert",
+				"ru": "Оптимизированы значки README и конфигурация файлов пакета",
+				"pt": "Otimização dos badges do README e da configuração dos arquivos do pacote",
+				"nl": "README-badges en pakketbestandenconfiguratie geïmplementeerd",
+				"fr": "Optimisation des badges du README et de la configuration des fichiers du paquet",
+				"it": "Ottimizzati i badge del README e la configurazione dei file del pacchetto",
+				"es": "Optimización de las insignias del README y de la configuración de los archivos del paquete",
+				"pl": "Zoptymalizowano odznaki w README i konfigurację plików pakietu",
+				"uk": "Оптимізовано значки README та конфігурацію файлів пакета",
+				"zh-cn": "优化了 README 徽章和包文件配置"
+			},
 			"0.0.1": {
 				"en": "initial release",
 				"de": "Erstveröffentlichung",

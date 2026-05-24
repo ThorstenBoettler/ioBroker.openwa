@@ -4,21 +4,21 @@
     "items": {
         "serverIp": {
             "type": "text",
-            "label": "Open-WA Server URL",
+            "label": "TEXT_SERVER_IP",
             "sm": 12,
             "md": 6,
             "newLine": true
         },
         "apiToken": {
             "type": "text",
-            "label": "API Token",
+            "label": "TEXT_API_TOKEN",
             "sm": 12,
             "md": 6,
             "newLine": true
         },
         "sessionID": {
             "type": "text",
-            "label": "Session ID",
+            "label": "TEXT_SESSION_ID",
             "sm": 12,
             "md": 6,
             "newLine": true

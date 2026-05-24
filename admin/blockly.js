@@ -2,25 +2,257 @@
 /* global Blockly, systemLang, main */
 'use strict';
 
-Blockly.Words['openwa']             = {'en': 'WhatsApp (Open-WA)',       'de': 'WhatsApp (Open-WA)'};
-Blockly.Words['openwa_private']     = {'en': 'Private Chat',             'de': 'Privater Chat'};
-Blockly.Words['openwa_group']       = {'en': 'Group Chat',               'de': 'Gruppen Chat'};
-Blockly.Words['openwa_message']     = {'en': 'Message',                  'de': 'Nachricht'};
-Blockly.Words['openwa_phone']       = {'en': 'ChatID',                   'de': 'ChatID'};
-Blockly.Words['openwa_anyInstance'] = {'en': 'all instances',            'de': 'Alle Instanzen'};
-Blockly.Words['openwa_tooltip']     = {'en': 'Send WhatsApp via Open-WA', 'de': 'Sende eine WhatsApp-Nachricht über Open-WA'};
-Blockly.Words['openwa_response']    = {'en': 'with result in',           'de': 'Ergebnis in'};
-Blockly.Words['openwa_msg_type']       = {'en': 'Message Type',             'de': 'Nachrichtentyp'};
-Blockly.Words['openwa_type_text']      = {'en': 'Text Message',             'de': 'Textnachricht'};
-Blockly.Words['openwa_type_image']     = {'en': 'Image Message',            'de': 'Bildnachricht'};
-Blockly.Words['openwa_type_video']     = {'en': 'Video Message',            'de': 'Videonachricht'};
-Blockly.Words['openwa_type_audio']     = {'en': 'Audio/Voice Message',      'de': 'Audio/Sprachnachricht'};
-Blockly.Words['openwa_type_document']  = {'en': 'Document',                 'de': 'Dokument'};
-Blockly.Words['openwa_url']            = {'en': 'URL (optional)',           'de': 'URL (optional)'};
-Blockly.Words['openwa_base64']         = {'en': 'Base64 String (optional)', 'de': 'Base64 String (optional)'};
-Blockly.Words['openwa_mimetype']       = {'en': 'MIME-Type',                'de': 'MIME-Type'};
-Blockly.Words['openwa_caption']        = {'en': 'Caption (optional)',    'de': 'Bildunterschrift (optional)'};
+Blockly.Words['openwa'] = {
+    'en': 'WhatsApp (Open-WA)',
+    'de': 'WhatsApp (Open-WA)',
+    'es': 'WhatsApp (Open-WA)',
+    'fr': 'WhatsApp (Open-WA)',
+    'it': 'WhatsApp (Open-WA)',
+    'nl': 'WhatsApp (Open-WA)',
+    'pl': 'WhatsApp (Open-WA)',
+    'pt': 'WhatsApp (Open-WA)',
+    'ru': 'WhatsApp (Open-WA)',
+    'uk': 'WhatsApp (Open-WA)',
+    'zh-cn': 'WhatsApp (Open-WA)'
+};
 
+Blockly.Words['openwa_private'] = {
+    'en': 'Private Chat',
+    'de': 'Privater Chat',
+    'es': 'Chat privado',
+    'fr': 'Chat privé',
+    'it': 'Chat privato',
+    'nl': 'Privéchat',
+    'pl': 'Czat prywatny',
+    'pt': 'Chat privado',
+    'ru': 'Приватный чат',
+    'uk': 'Приватний чат',
+    'zh-cn': '私聊'
+};
+
+Blockly.Words['openwa_group'] = {
+    'en': 'Group Chat',
+    'de': 'Gruppen Chat',
+    'es': 'Chat de grupo',
+    'fr': 'Chat de groupe',
+    'it': 'Chat di gruppo',
+    'nl': 'Groepschat',
+    'pl': 'Czat grupowy',
+    'pt': 'Chat de grupo',
+    'ru': 'Групповой чат',
+    'uk': 'Груповий чат',
+    'zh-cn': '群聊'
+};
+
+Blockly.Words['openwa_message'] = {
+    'en': 'Message',
+    'de': 'Nachricht',
+    'es': 'Mensaje',
+    'fr': 'Message',
+    'it': 'Messaggio',
+    'nl': 'Bericht',
+    'pl': 'Wiadomość',
+    'pt': 'Mensagem',
+    'ru': 'Сообщение',
+    'uk': 'Повідомлення',
+    'zh-cn': '消息'
+};
+
+Blockly.Words['openwa_phone'] = {
+    'en': 'ChatID',
+    'de': 'ChatID',
+    'es': 'ChatID',
+    'fr': 'ChatID',
+    'it': 'ChatID',
+    'nl': 'ChatID',
+    'pl': 'ChatID',
+    'pt': 'ChatID',
+    'ru': 'ChatID',
+    'uk': 'ChatID',
+    'zh-cn': 'ChatID'
+};
+
+Blockly.Words['openwa_anyInstance'] = {
+    'en': 'all instances',
+    'de': 'Alle Instanzen',
+    'es': 'todas las instancias',
+    'fr': 'toutes les instances',
+    'it': 'tutte le istanze',
+    'nl': 'alle instanties',
+    'pl': 'wszystkie instancje',
+    'pt': 'todas as instâncias',
+    'ru': 'все экземпляры',
+    'uk': 'всі екземпляри',
+    'zh-cn': '所有实例'
+};
+
+Blockly.Words['openwa_tooltip'] = {
+    'en': 'Send WhatsApp via Open-WA',
+    'de': 'Sende eine WhatsApp-Nachricht über Open-WA',
+    'es': 'Enviar WhatsApp a través de Open-WA',
+    'fr': 'Envoyer un message WhatsApp via Open-WA',
+    'it': 'Invia WhatsApp tramite Open-WA',
+    'nl': 'Verzend WhatsApp via Open-WA',
+    'pl': 'Wyślij WhatsApp przez Open-WA',
+    'pt': 'Enviar WhatsApp via Open-WA',
+    'ru': 'Отправить сообщение WhatsApp через Open-WA',
+    'uk': 'Надіслати повідомлення WhatsApp через Open-WA',
+    'zh-cn': '通过 Open-WA 发送 WhatsApp 消息'
+};
+
+Blockly.Words['openwa_response'] = {
+    'en': 'with result in',
+    'de': 'Ergebnis in',
+    'es': 'con resultado en',
+    'fr': 'avec le résultat dans',
+    'it': 'con risultato in',
+    'nl': 'met resultaat in',
+    'pl': 'z wynikiem w',
+    'pt': 'com resultado em',
+    'ru': 'с результатом в',
+    'uk': 'з результатом в',
+    'zh-cn': '结果存入'
+};
+
+Blockly.Words['openwa_msg_type'] = {
+    'en': 'Message Type',
+    'de': 'Nachrichtentyp',
+    'es': 'Tipo de mensaje',
+    'fr': 'Type de message',
+    'it': 'Tipo di messaggio',
+    'nl': 'Berichttype',
+    'pl': 'Typ wiadomości',
+    'pt': 'Tipo de mensagem',
+    'ru': 'Тип сообщения',
+    'uk': 'Тип повідомлення',
+    'zh-cn': '消息类型'
+};
+
+Blockly.Words['openwa_type_text'] = {
+    'en': 'Text Message',
+    'de': 'Textnachricht',
+    'es': 'Mensaje de texto',
+    'fr': 'Message texte',
+    'it': 'Messaggio di testo',
+    'nl': 'Tekstbericht',
+    'pl': 'Wiadomość tekstowa',
+    'pt': 'Mensagem de texto',
+    'ru': 'Текстовое сообщение',
+    'uk': 'Текстове повідомлення',
+    'zh-cn': '文本消息'
+};
+
+Blockly.Words['openwa_type_image'] = {
+    'en': 'Image Message',
+    'de': 'Bildnachricht',
+    'es': 'Mensaje de imagen',
+    'fr': 'Message image',
+    'it': 'Messaggio con immagine',
+    'nl': 'Afbeeldingsbericht',
+    'pl': 'Wiadomość graficzna',
+    'pt': 'Mensagem de imagem',
+    'ru': 'Изображение',
+    'uk': 'Зображення',
+    'zh-cn': '图片消息'
+};
+
+Blockly.Words['openwa_type_video'] = {
+    'en': 'Video Message',
+    'de': 'Videonachricht',
+    'es': 'Mensaje de video',
+    'fr': 'Message vidéo',
+    'it': 'Messaggio video',
+    'nl': 'Videobericht',
+    'pl': 'Wiadomość wideo',
+    'pt': 'Mensagem de vídeo',
+    'ru': 'Видеосообщение',
+    'uk': 'Відеоповідомлення',
+    'zh-cn': '视频消息'
+};
+
+Blockly.Words['openwa_type_audio'] = {
+    'en': 'Audio/Voice Message',
+    'de': 'Audio/Sprachnachricht',
+    'es': 'Mensaje de audio/voz',
+    'fr': 'Message audio/vocal',
+    'it': 'Messaggio audio/vocale',
+    'nl': 'Audio-/Spraakbericht',
+    'pl': 'Wiadomość audio/głosowa',
+    'pt': 'Mensagem de áudio/voz',
+    'ru': 'Аудио/Голосовое сообщение',
+    'uk': 'Аудіо/Голосове повідомлення',
+    'zh-cn': '音频/语音消息'
+};
+
+Blockly.Words['openwa_type_document'] = {
+    'en': 'Document',
+    'de': 'Dokument',
+    'es': 'Documento',
+    'fr': 'Document',
+    'it': 'Documento',
+    'nl': 'Document',
+    'pl': 'Dokument',
+    'pt': 'Documento',
+    'ru': 'Документ',
+    'uk': 'Документ',
+    'zh-cn': '文档'
+};
+
+Blockly.Words['openwa_url'] = {
+    'en': 'URL (optional)',
+    'de': 'URL (optional)',
+    'es': 'URL (opcional)',
+    'fr': 'URL (optionnel)',
+    'it': 'URL (opzionale)',
+    'nl': 'URL (optioneel)',
+    'pl': 'URL (opcjonalnie)',
+    'pt': 'URL (opcional)',
+    'ru': 'URL (необязательно)',
+    'uk': 'URL (необов\'язково)',
+    'zh-cn': 'URL (可选)'
+};
+
+Blockly.Words['openwa_base64'] = {
+    'en': 'Base64 String (optional)',
+    'de': 'Base64 String (optional)',
+    'es': 'Cadena Base64 (opcional)',
+    'fr': 'Chaîne Base64 (optionnel)',
+    'it': 'Stringa Base64 (opzionale)',
+    'nl': 'Base64-string (optioneel)',
+    'pl': 'Ciąg Base64 (opcjonalnie)',
+    'pt': 'String Base64 (opcional)',
+    'ru': 'Строка Base64 (необязательно)',
+    'uk': 'Рядок Base64 (необов\'язково)',
+    'zh-cn': 'Base64 字符串 (可选)'
+};
+
+Blockly.Words['openwa_mimetype'] = {
+    'en': 'MIME-Type',
+    'de': 'MIME-Type',
+    'es': 'Tipo MIME',
+    'fr': 'Type MIME',
+    'it': 'Tipo MIME',
+    'nl': 'MIME-type',
+    'pl': 'Typ MIME',
+    'pt': 'Tipo MIME',
+    'ru': 'MIME-тип',
+    'uk': 'MIME-тип',
+    'zh-cn': 'MIME 类型'
+};
+
+Blockly.Words['openwa_caption'] = {
+    'en': 'Caption (optional)',
+    'de': 'Bildunterschrift (optional)',
+    'es': 'Subtítulo (opcional)',
+    'fr': 'Légende (optionnel)',
+    'it': 'Didascalia (opzionale)',
+    'nl': 'Onderschrift (optioneel)',
+    'pl': 'Podpis (opcjonalnie)',
+    'pt': 'Legenda (opcional)',
+    'ru': 'Подпись (необязательно)',
+    'uk': 'Підпис (необов\'язково)',
+    'zh-cn': '说明/标题 (可选)'
+};
 Blockly.Sendto.blocks['openwa'] =
     '<block type="openwa">'
     + '     <value name="INSTANCE"></value>'

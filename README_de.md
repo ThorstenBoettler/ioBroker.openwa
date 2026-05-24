@@ -213,6 +213,12 @@ Im Fehlerfall:
 * Verschlüsselte Speicherung des API-Tokens
 * Verbindungsstatusanzeige über `info.connection`
 
+### 0.0.2 (2026-05-23)
+* README.md aktualisiert
+
+### 0.0.3 (2026-05-24)
+* Fehlende übersetzungen hinzugefügt
+
 ---
 
 ## Lizenz

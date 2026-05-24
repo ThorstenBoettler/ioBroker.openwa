@@ -1,6 +1,6 @@
 {
   "name": "iobroker.openwa",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Connects ioBroker to an Open-WA instance",
   "author": {
     "name": "Thorsten",

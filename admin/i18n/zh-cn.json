@@ -1,5 +1,5 @@
 {
-	"openwa adapter settings": "openwa的适配器设置",
-	"option1": "选项1",
-	"option2": "选项2"
+    "TEXT_SERVER_IP": "Open-WA 服务器 URL",
+    "TEXT_API_TOKEN": "API 令牌 (Token)",
+    "TEXT_SESSION_ID": "会话 ID (Session ID)"
 }
