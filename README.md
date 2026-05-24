@@ -212,6 +212,12 @@ On error:
 * Encrypted storage of the API token
 * Connection status indicator via `info.connection`
 
+### 0.0.2 (2026-05-23)
+* README.md correction
+
+### 0.0.3 (2026-05-24)
+* Adding missing translations
+
 ---
 
 ## License

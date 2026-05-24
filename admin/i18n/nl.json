@@ -1,5 +1,5 @@
 {
-	"openwa adapter settings": "Adapterinstellingen voor openwa",
-	"option1": "optie1",
-	"option2": "optie2"
+    "TEXT_SERVER_IP": "Open-WA Server-URL",
+    "TEXT_API_TOKEN": "API-token",
+    "TEXT_SESSION_ID": "Sessie-ID"
 }
